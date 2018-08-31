@@ -1,6 +1,7 @@
 import requests
 from settings import ACCESS_TOKEN
 
+API_VERSION = '5.52'
 API_HOST = 'https://api.vk.com'
 API_METHOD_ENDPOINT = API_HOST + '/method'
 
@@ -9,14 +10,13 @@ METHOD_WALL_GET = 'wall.get'
 
 class VKAPI:
     
-    def __init__(self, token=ACCESS_TOKEN, id=None, requests_lib=requests, api_endpoint=API_METHOD_ENDPOINT):
+    def __init__(self, token=ACCESS_TOKEN, id=None, requests_lib=requests):
         self.token = token
         self.id = id
-        self.version = '5.52'
         self.requests = requests_lib
 
     def _get_mandatory_params(self):
-        return {'access_token': self.token, 'version': self.version}
+        return {'access_token': self.token, 'version': API_VERSION}
     
     def _get_method_endpoint(self, method):
         return '/'.join([API_METHOD_ENDPOINT, method])
