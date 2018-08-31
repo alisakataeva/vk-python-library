@@ -7,9 +7,9 @@ except ImportError:
 
 class VKAPI:
     
-    def __init__(self, id=None):
+    def __init__(self, token=ACCESS_TOKEN, id=None):
         self.server = 'https://api.vk.com/method'
-        self.token = ACCESS_TOKEN
+        self.token = token
         self.id = id
         self.version = '5.52'
         
