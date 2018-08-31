@@ -1,2 +1,3 @@
 local.py
 env/
+__pycache__/
