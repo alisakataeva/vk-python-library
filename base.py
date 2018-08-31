@@ -1,11 +1,16 @@
 import requests
 
+try:
+    from .local import ACCESS_TOKEN
+except ImportError:
+    print('Define ACCESS_TOKEN in local.py')
+
 class VKAPI:
     
-    def __init__(self, token, id):
+    def __init__(self, id=None):
         self.server = 'https://api.vk.com/method'
-        self.token = token
-        self.id = id or None
+        self.token = ACCESS_TOKEN
+        self.id = id
         self.version = '5.52'
         
     def query(self, model, params=None):
@@ -19,8 +24,8 @@ class VKAPI:
             query = '%s/%s?v=%s&access_token=%s' % (self.server, model, self.version, self.token)
         return query
     
-    def get_wall_posts(self, user_id=None):
+    def get_wall_posts(self, owner_id=None):
         if owner_id:
-            return requests.get(self.query('wall.get', {'owner_id': user_id})).content
+            return requests.get(self.query('wall.get', {'owner_id': owner_id})).content
         else:
             return requests.get(self.query('wall.get')).content
