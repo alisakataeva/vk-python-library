@@ -3,7 +3,7 @@ from settings import ACCESS_TOKEN
 
 API_VERSION = '5.52'
 API_HOST = 'https://api.vk.com'
-API_METHOD_ENDPOINT = API_HOST + '/method'
+API_METHOD_ENDPOINT = API_HOST + '/method/'
 
 METHOD_WALL_GET = 'wall.get'
 
@@ -18,13 +18,12 @@ class VKAPI:
     def _get_mandatory_params(self):
         return {'access_token': self.token, 'version': API_VERSION}
     
-    def _get_method_endpoint(self, method):
-        return '/'.join([API_METHOD_ENDPOINT, method])
+    def _build_querystring(self, **params):
+        return '?' + "&".join("{param}={value}".format(param=p, value=v) for p, v in params.items() if v is not None)
     
     def query(self, method, **params):
-        all_params = dict(self._get_mandatory_params(), **params)
-        querystring = '?' + "&".join("{param}={value}".format(param=p, value=v) for p, v in all_params.items() if v is not None)
-        url = self._get_method_endpoint(method) +  querystring
+        method_endpoint = API_METHOD_ENDPOINT + method
+        url = method_endpoint +  self._build_querystring(**self._get_mandatory_params(), **params)
         return self.requests.get(url).content
     
     def wall_get(self, owner_id=None, domain=None, offset=None, count=None, filter='all', extended=0, fields=None):
